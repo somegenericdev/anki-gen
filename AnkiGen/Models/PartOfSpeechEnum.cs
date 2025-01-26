@@ -22,5 +22,10 @@ public enum PartOfSpeechEnum
     Verb,
     Num,
     Phrase,
-    Proverb
+    Proverb,
+    Combining_Form, 
+    Prep_Phrase,
+    Punct, 
+    Article,
+    Root
 }

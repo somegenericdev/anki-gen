@@ -12,6 +12,10 @@ namespace AnkiGen.DTOs
         [Description("sh")]
         Serbian,
         [Description("it")]
-        Italian
+        Italian,
+        [Description("uk")]
+        Ukrainian,
+        [Description("ar")]
+        Arabic,
     }
 }
