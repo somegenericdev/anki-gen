@@ -24,14 +24,14 @@ namespace AnkiGen.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             OnModelCreatingPartial(modelBuilder);
+            modelBuilder.Entity<Word>().Property(x => x.Pos).HasConversion(new PartOfSpeechEnumConverter());
         }
 
         
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             base.ConfigureConventions(configurationBuilder);
- 
-            configurationBuilder.Properties<PartOfSpeechEnum>().HaveConversion<string>();
+            // configurationBuilder.Properties<PartOfSpeechEnum>().HaveConversion<string>();
         }
 
         
