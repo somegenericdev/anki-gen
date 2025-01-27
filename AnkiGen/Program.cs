@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.IO.Compression;
 using System.Text;
 
 //.\AnkiGen.exe--word - list - file.\frequency - list.txt--parts - of - speech noun adj adv verb --deck-name foo --redirect --debug
@@ -120,14 +121,13 @@ Console.WriteLine($"It took {stopWatch.Elapsed.TotalMinutes} minutes for a full 
 
 void LoadDb(ProjectDbContext dbContext, LanguageEnum language)
 {
-
-    //File.WriteAllBytes("Databases/db_sh2.json", Lzma.Compress(File.ReadAllBytes($"Databases/db.json")));
-
-    byte[] dbCompressed = File.ReadAllBytes($"Databases/{language.GetDescription()}.7z");
-    var dbJson = Encoding.UTF8.GetString(Lzma.Decompress(dbCompressed));
+    var dbJson = Encoding.UTF8.GetString(Gzip.Decompress(new FileInfo($"Databases/{language.GetDescription()}.gz")));
 
     List<Word> words = JsonConvert.DeserializeObject<List<Word>>(dbJson);
     dbContext.AddRange(words);
     dbContext.SaveChanges();
     dbContext.ChangeTracker.Clear();
 }
+
+
+

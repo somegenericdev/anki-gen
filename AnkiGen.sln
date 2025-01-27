@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnkiGen", "AnkiGen\AnkiGen.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnkiNet", "AnkiNet\AnkiNet.csproj", "{5F269C2A-6A0C-4293-BA0D-8F06538925CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tmp", "tmp\tmp.csproj", "{A84BDDE8-B376-41AB-8EDD-E48DE2606E04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5F269C2A-6A0C-4293-BA0D-8F06538925CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F269C2A-6A0C-4293-BA0D-8F06538925CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F269C2A-6A0C-4293-BA0D-8F06538925CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A84BDDE8-B376-41AB-8EDD-E48DE2606E04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84BDDE8-B376-41AB-8EDD-E48DE2606E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A84BDDE8-B376-41AB-8EDD-E48DE2606E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A84BDDE8-B376-41AB-8EDD-E48DE2606E04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
