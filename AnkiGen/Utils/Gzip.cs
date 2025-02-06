@@ -4,23 +4,18 @@ namespace AnkiGen.Utils;
 
 public static class Gzip
 {
-
-    public static byte[] Decompress(FileInfo fileToDecompress)
+    public static FileInfo Compress(FileInfo source, FileInfo target)
     {
-        using (FileStream originalFileStream = fileToDecompress.OpenRead())
+        using (var sourceStream = source.OpenRead())
+        using (var outputStream = File.Create(target.ToString()))
+        using (var gzipStream = new GZipStream(outputStream, CompressionLevel.SmallestSize))
         {
-            string currentFileName = fileToDecompress.FullName;
-
-            MemoryStream decompressedStream = new MemoryStream();
-            using (GZipStream decompressionStream = new GZipStream(originalFileStream, CompressionMode.Decompress))
-            {
-
-                decompressionStream.CopyTo(decompressedStream);
-            }
-            decompressedStream.Position = 0;
-            return decompressedStream.ToArray();
+            sourceStream.CopyTo(gzipStream);
         }
+
+        return target;
     }
+
 
     public static FileInfo DecompressToTempFile(FileInfo fileToDecompress)
     {
@@ -35,5 +30,4 @@ public static class Gzip
 
         return new FileInfo(destinationPath);
     }
-
 }
