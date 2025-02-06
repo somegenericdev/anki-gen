@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.IO;
 using System.IO.Compression;
 using System.Text;
 
@@ -47,10 +48,10 @@ stopWatch.Start();
 
 var includedPartsOfSpeech = new[] { PartOfSpeechEnum.Noun, PartOfSpeechEnum.Adj, PartOfSpeechEnum.Adv, PartOfSpeechEnum.Verb };
 var redirect = true;
-var deckName = "hyperpolyglot-gigachad-arabic-deck";
-var inputFilePath = "ar-words.txt";
-var debug = true;
-var language = LanguageEnum.Arabic;
+var deckName = "srb-ankigen";
+var inputFilePath = "frequency-list.txt";
+var debug = false;
+var language = LanguageEnum.Serbian;
 int? maxDefinitions = 1;
 #endif
 Console.WriteLine("Loading data into memory...");
@@ -121,12 +122,21 @@ Console.WriteLine($"It took {stopWatch.Elapsed.TotalMinutes} minutes for a full 
 
 void LoadDb(ProjectDbContext dbContext, LanguageEnum language)
 {
-    var dbJson = Encoding.UTF8.GetString(Gzip.Decompress(new FileInfo($"Databases/{language.GetDescription()}.gz")));
-
-    List<Word> words = JsonConvert.DeserializeObject<List<Word>>(dbJson);
-    dbContext.AddRange(words);
-    dbContext.SaveChanges();
-    dbContext.ChangeTracker.Clear();
+    var dbPath = Gzip.DecompressToTempFile(new FileInfo($"Databases/{language.GetDescription()}.gz"));
+    using (var dbStream = dbPath.OpenRead())
+    {
+        using (StreamReader r = new StreamReader(dbStream))
+        {
+            using (JsonReader reader = new JsonTextReader(r))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                List<Word> words = serializer.Deserialize<List<Word>>(reader);
+                dbContext.AddRange(words);
+                dbContext.SaveChanges();
+                dbContext.ChangeTracker.Clear();
+            }
+        }
+    }
 }
 
 

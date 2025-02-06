@@ -10,20 +10,30 @@ public static class Gzip
         using (FileStream originalFileStream = fileToDecompress.OpenRead())
         {
             string currentFileName = fileToDecompress.FullName;
-            string newFileName = currentFileName.Remove(currentFileName.Length - fileToDecompress.Extension.Length);
 
-            using (FileStream decompressedFileStream = File.Create(newFileName))
+            MemoryStream decompressedStream = new MemoryStream();
+            using (GZipStream decompressionStream = new GZipStream(originalFileStream, CompressionMode.Decompress))
             {
-                using (GZipStream decompressionStream = new GZipStream(originalFileStream, CompressionMode.Decompress))
-                {
-                    decompressionStream.CopyTo(decompressedFileStream);
-                }
-                MemoryStream ms = new MemoryStream();
-                decompressedFileStream.Position = 0;
-                decompressedFileStream.CopyTo(ms);
-                return ms.ToArray();
+
+                decompressionStream.CopyTo(decompressedStream);
             }
+            decompressedStream.Position = 0;
+            return decompressedStream.ToArray();
         }
     }
-    
+
+    public static FileInfo DecompressToTempFile(FileInfo fileToDecompress)
+    {
+        var destinationPath = Path.GetTempFileName();
+
+        using (FileStream sourceFile = fileToDecompress.OpenRead())
+        using (FileStream destinationFile = File.Create(destinationPath))
+        using (GZipStream gzipStream = new GZipStream(sourceFile, CompressionMode.Decompress))
+        {
+            gzipStream.CopyTo(destinationFile);
+        }
+
+        return new FileInfo(destinationPath);
+    }
+
 }
