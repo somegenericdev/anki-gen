@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
-using MoreLinq;
 
 //.\AnkiGen.exe--word - list - file.\frequency - list.txt--parts - of - speech noun adj adv verb --deck-name foo --redirect --debug
 
@@ -111,6 +110,10 @@ var cardDtos = wordObjs.Where(x => x != null)
 
 if(maxCards != null)
 {
+    if (maxCards > cardDtos.Count())
+    {
+        Console.WriteLine("Error: the --max-cards parameter cannot be greater than card count.");
+    }
     cardDtos = cardDtos.Take(maxCards.Value).ToList();
 }
 
