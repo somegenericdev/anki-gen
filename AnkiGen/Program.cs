@@ -14,7 +14,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-//.\AnkiGen.exe--word - list - file.\frequency - list.txt--parts - of - speech noun adj adv verb --deck-name foo --redirect --debug
+//./AnkiGen --word-list-file frequency-list.txt --parts-of-speech noun adj adv verb --deck-name Serbian-1000 --redirect --language serbian --max-cards 1000 --max-definitions 2
 
 #if (!DEBUG)
 
