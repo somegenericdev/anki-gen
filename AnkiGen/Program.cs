@@ -105,28 +105,28 @@ var wordObjs = wordList.Select(x =>
                  Console.WriteLine($"{i + 1}/{wordList.Count()}");
                  return x;
              })
-             .ToList();
+    .Where(x => x != null)
+    .ToList();
 
 Console.WriteLine("Generating Anki collection...");
 
-var cardDtos = wordObjs.Where(x => x != null)
-                             .Where(x => x.Definitions.Count() > 0)
-                             .Select(x =>
-                             {
-                                 x.Definitions = x.Definitions.GroupBy(x => x).Select(x => x.First()).ToList(); //get rid of duplicates within a card
-                                 return x;
-                             })
-                             .GroupBy(x => x.Name).Select(x => x.First()) //get rid of duplicates within the deck
-                             .Select(x =>
-                             {
-                                 if (maxDefinitions != null)
-                                 {
-                                     x.Definitions = x.Definitions.Take(maxDefinitions.Value).ToList();
-                                 }
-                                 return x;
-                             })
-                             .Select(x => new CardDto(x.Name, x.Definitions.Select((y, i) => $"{i + 1}. {y}").Implode("\n").Replace("\r\n", "<br/>").Replace("\n", "<br/>")))
-                             .ToList();
+var cardDtos = wordObjs.Where(x => x.Definitions.Count() > 0)
+                                   .Select(x =>
+                                   {
+                                       x.Definitions = x.Definitions.GroupBy(x => x).Select(x => x.First()).ToList(); //get rid of duplicates within a card
+                                       return x;
+                                   })
+                                   .GroupBy(x => x.Name).Select(x => x.First()) //get rid of duplicates within the deck
+                                   .Select(x =>
+                                   {
+                                       if (maxDefinitions != null)
+                                       {
+                                           x.Definitions = x.Definitions.Take(maxDefinitions.Value).ToList();
+                                       }
+                                       return x;
+                                   })
+                                   .Select(x => new CardDto(x.Name, x.Definitions.Select((y, i) => $"{i + 1}. {y}").Implode("\n").Replace("\r\n", "<br/>").Replace("\n", "<br/>")))
+                                   .ToList();
 
 
 
