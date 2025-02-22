@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using MoreLinq;
 
 //./AnkiGen --word-list-file frequency-list.txt --parts-of-speech noun adj adv verb --deck-name Serbian-1000 --redirect --language serbian --max-cards 1000 --max-definitions 2
 
@@ -79,8 +80,27 @@ if (debug)
 
 var wordRepository = new WordRepository(dbContext);
 
-var wordObjs = wordList.Select(x => redirect ? (wordRepository.GetWord(x, false, includedPartsOfSpeech) ?? wordRepository.GetRedirect(x, includedPartsOfSpeech)) : wordRepository.GetWord(x, false, includedPartsOfSpeech))
-             .Select((x, i) =>
+int cardCounter = 0;
+
+var wordObjs = wordList.Select(x =>
+    {
+        if (maxCards != null && cardCounter == maxCards)
+        {
+            return null;
+        }
+        
+        var wordObj = redirect
+            ? (wordRepository.GetWord(x, false, includedPartsOfSpeech) ??
+               wordRepository.GetRedirect(x, includedPartsOfSpeech))
+            : wordRepository.GetWord(x, false, includedPartsOfSpeech);
+        if (wordObj != null)
+        {
+            cardCounter = cardCounter + 1;
+        }
+
+        return wordObj;
+    })
+    .Select((x, i) =>
              {
                  Console.WriteLine($"{i + 1}/{wordList.Count()}");
                  return x;
@@ -108,14 +128,6 @@ var cardDtos = wordObjs.Where(x => x != null)
                              .Select(x => new CardDto(x.Name, x.Definitions.Select((y, i) => $"{i + 1}. {y}").Implode("\n").Replace("\r\n", "<br/>").Replace("\n", "<br/>")))
                              .ToList();
 
-if(maxCards != null)
-{
-    if (maxCards > cardDtos.Count())
-    {
-        Console.WriteLine("Error: the --max-cards parameter cannot be greater than card count.");
-    }
-    cardDtos = cardDtos.Take(maxCards.Value).ToList();
-}
 
 
 var ankiCollection = cardDtos.ToAnkiCollection(deckName);
