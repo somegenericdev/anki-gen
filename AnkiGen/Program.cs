@@ -117,7 +117,6 @@ if(maxCards != null)
     cardDtos = cardDtos.Take(maxCards.Value).ToList();
 }
 
-File.WriteAllText("debug.json", JsonConvert.SerializeObject(cardDtos));
 
 var ankiCollection = cardDtos.ToAnkiCollection(deckName);
 
