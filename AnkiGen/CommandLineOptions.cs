@@ -23,10 +23,10 @@ namespace AnkiGen
         public bool Debug { get; set; }
         [Option("language", Required = true, HelpText = "The deck's language.")]
         public string Language { get; set; }
-        [Option("max-definitions", Required = true, HelpText = "The maximum number of definitions.")]
+        [Option("max-definitions", Required = false, HelpText = "The maximum number of definitions.")]
         public int? MaxDefinitions { get; set; }
 
-        [Option("max-cards", Required = true, HelpText = "The maximum number of cards.")]
+        [Option("max-cards", Required = false, HelpText = "The maximum number of cards.")]
         public int? MaxCards { get; set; }
     }
 }
