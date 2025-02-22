@@ -25,5 +25,8 @@ namespace AnkiGen
         public string Language { get; set; }
         [Option("max-definitions", Required = true, HelpText = "The maximum number of definitions.")]
         public int? MaxDefinitions { get; set; }
+
+        [Option("max-cards", Required = true, HelpText = "The maximum number of cards.")]
+        public int? MaxCards { get; set; }
     }
 }

@@ -42,21 +42,5 @@ string[] filePaths = Directory.GetFiles("/home/debian/Documents/progetti/serbian
 //
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var bytearr =
-     Gzip.Decompress(new FileInfo("/home/debian/Documents/progetti/serbian-dictionary-utils/output-langs/gz/fi.gz"));
-Console.WriteLine("!");
+Gzip.Compress(new FileInfo("/home/debian/Documents/progetti/serbian-dictionary-utils/output-langs/fi.json"),
+     new FileInfo("/home/debian/Documents/progetti/serbian-dictionary-utils/output-langs/fi-new.gz"));

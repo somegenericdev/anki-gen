@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using MoreLinq;
 
 //.\AnkiGen.exe--word - list - file.\frequency - list.txt--parts - of - speech noun adj adv verb --deck-name foo --redirect --debug
 
@@ -41,6 +42,7 @@ stopWatch.Start();
         var debug = o.Debug;
         var language = o.Language.ParseEnum<LanguageEnum>();
         var maxDefinitions = o.MaxDefinitions;
+        var maxCards = o.MaxCards;
         Console.WriteLine($"Language: {language.ToString()}");
 #endif
 
@@ -48,11 +50,13 @@ stopWatch.Start();
 
 var includedPartsOfSpeech = new[] { PartOfSpeechEnum.Noun, PartOfSpeechEnum.Adj, PartOfSpeechEnum.Adv, PartOfSpeechEnum.Verb };
 var redirect = true;
-var deckName = "srb-ankigen";
+var deckName = "Serbian-1000";
 var inputFilePath = "frequency-list.txt";
 var debug = false;
 var language = LanguageEnum.Serbian;
-int? maxDefinitions = 1;
+int? maxDefinitions = 2;
+int? maxCards = 1000;
+
 #endif
 Console.WriteLine("Loading data into memory...");
 
@@ -104,6 +108,11 @@ var cardDtos = wordObjs.Where(x => x != null)
                              })
                              .Select(x => new CardDto(x.Name, x.Definitions.Select((y, i) => $"{i + 1}. {y}").Implode("\n").Replace("\r\n", "<br/>").Replace("\n", "<br/>")))
                              .ToList();
+
+if(maxCards != null)
+{
+    cardDtos = cardDtos.Take(maxCards.Value).ToList();
+}
 
 File.WriteAllText("debug.json", JsonConvert.SerializeObject(cardDtos));
 
