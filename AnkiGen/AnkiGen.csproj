@@ -18,12 +18,8 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.12" />
 		<PackageReference Include="morelinq" Version="4.4.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="SomeGenericDev.Anki.NET" Version="2.0.1" />
 		<PackageReference Include="System.Linq.Async" Version="6.0.1" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-	  <ProjectReference Include="..\AnkiNet\AnkiNet.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
